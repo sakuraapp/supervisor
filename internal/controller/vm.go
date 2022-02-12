@@ -9,8 +9,8 @@ type VMController struct {
 	app supervisor.Supervisor
 }
 
-func (v *VMController) Deploy(w http.ResponseWriter, r *http.Request) {
-	
+func (c *VMController) Deploy(w http.ResponseWriter, r *http.Request) {
+
 }
 
 func Init(app supervisor.Supervisor) *VMController {

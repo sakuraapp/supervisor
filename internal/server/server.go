@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"github.com/sakuraapp/supervisor/pkg/config"
+	"github.com/sakuraapp/supervisor/internal/config"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 )

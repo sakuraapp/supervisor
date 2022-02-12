@@ -1,6 +1,8 @@
 package supervisor
 
-import "github.com/sakuraapp/supervisor/pkg/config"
+import (
+	"github.com/sakuraapp/supervisor/internal/config"
+)
 
 type Supervisor interface {
 	GetConfig() *config.Config

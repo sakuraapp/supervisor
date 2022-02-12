@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/joho/godotenv"
 	sharedUtil "github.com/sakuraapp/shared/pkg/util"
+	"github.com/sakuraapp/supervisor/internal/config"
 	"github.com/sakuraapp/supervisor/internal/server"
-	"github.com/sakuraapp/supervisor/pkg/config"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"strconv"
