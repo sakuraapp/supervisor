@@ -1,9 +1,11 @@
 package supervisor
 
 import (
+	"github.com/go-redis/redis/v8"
 	"github.com/sakuraapp/supervisor/internal/config"
 )
 
-type Supervisor interface {
+type App interface {
 	GetConfig() *config.Config
+	GetRedis() *redis.Client
 }

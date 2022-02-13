@@ -1,10 +1,11 @@
 package main
 
 import (
+	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	sharedUtil "github.com/sakuraapp/shared/pkg/util"
 	"github.com/sakuraapp/supervisor/internal/config"
-	"github.com/sakuraapp/supervisor/internal/server"
+	"github.com/sakuraapp/supervisor/internal/service"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"strconv"
@@ -29,16 +30,44 @@ func main() {
 		log.WithError(err).Fatal("Invalid port")
 	}
 
-	allowedOrigins := sharedUtil.ParseAllowedOrigins(os.Getenv("ALLOWED_ORIGINS"))
+	env := os.Getenv("APP_ENV")
+	envType := config.EnvDEV
 
-	conf := &config.Config{
-		Port: intPort,
-		AllowedOrigins: allowedOrigins,
+	if env == string(config.EnvPROD) {
+		envType = config.EnvPROD
 	}
 
-	_, err = server.New(conf)
+	nodeId := os.Getenv("NODE_ID")
+
+	if nodeId == "" {
+		nodeId = uuid.NewString()
+	}
+
+	allowedOrigins := sharedUtil.ParseAllowedOrigins(os.Getenv("ALLOWED_ORIGINS"))
+
+	redisAddr := os.Getenv("REDIS_ADDR")
+	redisPassword := os.Getenv("REDIS_PASSWORD")
+	redisDatabase := os.Getenv("REDIS_DATABASE")
+	redisDb, err := strconv.Atoi(redisDatabase)
 
 	if err != nil {
-		log.WithError(err).Fatal("Failed to start server")
+		redisDb = 0
+	}
+
+	conf := &config.Config{
+		Env: envType,
+		Port: intPort,
+		AllowedOrigins: allowedOrigins,
+		RedisAddr: redisAddr,
+		RedisPassword: redisPassword,
+		RedisDatabase: redisDb,
+		TLSCertPath: os.Getenv("TLS_CERT_PATH"),
+		TLSKeyPath: os.Getenv("TLS_KEY_PATH"),
+	}
+
+	_, err = service.New(conf)
+
+	if err != nil {
+		log.WithError(err).Fatal("Failed to start service")
 	}
 }

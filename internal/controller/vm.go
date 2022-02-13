@@ -6,13 +6,13 @@ import (
 )
 
 type VMController struct {
-	app supervisor.Supervisor
+	app supervisor.App
 }
 
 func (c *VMController) Deploy(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func Init(app supervisor.Supervisor) *VMController {
+func Init(app supervisor.App) *VMController {
 	return &VMController{app: app}
 }
